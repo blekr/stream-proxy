@@ -1,4 +1,4 @@
-FROM node:8.9.3-alpine
+FROM node:8.9.1-alpine
 
 ARG NODE_ENV=production
 ENV NODE_ENV=$NODE_ENV
@@ -10,31 +10,23 @@ WORKDIR /usr/src/app
 # RUN set -ex; \
 #   apk add --no-cache ...
 
-# Install Node.js dependencies
-COPY package.json yarn.lock ./
-RUN set -ex; \
-  if [ "$NODE_ENV" = "production" ]; then \
-  yarn install --no-cache --frozen-lockfile --production; \
-  elif [ "$NODE_ENV" = "test" ]; then \
-  touch yarn-error.log; \
-  mkdir -m 777 build; \
-  yarn install --no-cache --frozen-lockfile; \
-  chown -R node:node build node_modules package.json yarn.lock yarn-error.log; \
-  else \
-  touch yarn-error.log; \
-  mkdir -p -m 777 build node_modules /home/node/.cache/yarn; \
-  chown -R node:node build node_modules package.json yarn.lock yarn-error.log /home/node/.cache/yarn; \
-  fi;
+#RUN apk add --update python python-dev py-pip build-base
+#RUN apk add --update git
+#RUN apk add --update openssh-client
 
-# Copy application files
-COPY tools ./tools/
-COPY migrations ./migrations/
-COPY seeds ./seeds/
-COPY locales ./locales/
-# Attempts to copy "build" folder even if it doesn't exist
-COPY .env build* ./build/
+#COPY keys/* /root/.ssh/
+#RUN chown -R root:root /root/.ssh
+#RUN chmod -R 0600 /root/.ssh
 
-# Run the container under "node" user by default
-USER node
+RUN npm i -g npx
 
+COPY package.json yarn.lock .babelrc ./
+RUN yarn config set registry https://registry.npm.taobao.org -g
+RUN yarn install --no-cache --frozen-lockfile --production=false
+
+COPY src ./src
+COPY tools ./tools
+RUN chown -R root:root src tools
+
+RUN npx babel src --out-dir build
 CMD [ "node", "build/server_ws.js" ]
