@@ -98,7 +98,7 @@ module.exports = task(
                 });
                 // Enable source maps
                 const data =
-                  (src === 'src/server.js'
+                  (src === 'src/server_ws.js'
                     ? "require('source-map-support').install(); "
                     : '') +
                   code +

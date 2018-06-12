@@ -37,4 +37,4 @@ COPY .env build* ./build/
 # Run the container under "node" user by default
 USER node
 
-CMD [ "node", "build/server.js" ]
+CMD [ "node", "build/server_ws.js" ]

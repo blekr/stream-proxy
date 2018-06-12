@@ -57,10 +57,10 @@ function spawnServer() {
       '--no-lazy',
       // Enable "hot reload", it only works when debugger is off
       ...(isDebug
-        ? ['./server.js']
+        ? ['./server_ws.js']
         : [
             '--eval',
-            'process.stdin.on("data", data => { if (data.toString() === "load") require("./server.js"); });',
+            'process.stdin.on("data", data => { if (data.toString() === "load") require("./server_ws.js"); });',
           ]),
     ],
     { cwd: './build', stdio: ['pipe', 'inherit', 'inherit'], timeout: 3000 },
@@ -69,10 +69,6 @@ function spawnServer() {
 
 module.exports = task('run', () =>
   Promise.resolve()
-    // Migrate database schema to the latest version
-    .then(() => {
-      cp.spawnSync('node', ['tools/db.js', 'migrate'], { stdio: 'inherit' });
-    })
     // Compile and launch the app in watch mode, restart it after each rebuild
     .then(() =>
       build({
