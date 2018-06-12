@@ -12,4 +12,3 @@ build:
     - docker run -d --restart always --name ipc-proxy --network ipc2 -e SRS_HOST=srs -e SRS_PORT=8000 -e WS_PORT=2233 -p 2233:2233 ipc-proxy
   only:
     - develop
-
