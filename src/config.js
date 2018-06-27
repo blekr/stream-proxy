@@ -4,4 +4,5 @@ export default {
     port: process.env.SRS_PORT,
   },
   wsPort: process.env.WS_PORT,
+  superSecret: '3zigbfZfr43LPHdD',
 };
