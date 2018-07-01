@@ -26,7 +26,7 @@ deploy-beta:
     - ssh beta docker login -u dockerClient -p DczMTUzODcz 101.254.255.75:5000
     - ssh beta docker pull 101.254.255.75:5000/ipc-proxy
     - ssh beta docker rm -f ipc-proxy || true
-    - ssh beta docker run -d --restart always --name ipc-proxy --network ipc2 -e SRS_HOST=srs -e SRS_PORT=8000 -e WS_PORT=4010 -p 4010:4010 localhost:5000/ipc-proxy
+    - ssh beta docker run -d --restart always --name ipc-proxy --network ipc2 -e SRS_HOST=srs -e SRS_PORT=8000 -e WS_PORT=4010 -p 4010:4010 101.254.255.75:5000/ipc-proxy
   only:
     - develop
 
@@ -36,6 +36,6 @@ deploy-prod:
     - ssh prod docker login -u dockerClient -p DczMTUzODcz 101.254.255.75:5000
     - ssh prod docker pull 101.254.255.75:5000/ipc-proxy
     - ssh prod docker rm -f ipc-proxy || true
-    - ssh prod docker run -d --restart always --name ipc-proxy --network ipc -e SRS_HOST=srs -e SRS_PORT=8000 -e WS_PORT=4010 -p 4010:4010 localhost:5000/ipc-proxy
+    - ssh prod docker run -d --restart always --name ipc-proxy --network ipc -e SRS_HOST=srs -e SRS_PORT=8000 -e WS_PORT=4010 -p 4010:4010 101.254.255.75:5000/ipc-proxy
   only:
     - master
