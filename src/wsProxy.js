@@ -34,7 +34,7 @@ export async function webSocketHandler(ws, req) {
   })
     .on('data', data => {
       if (ws.readyState !== WebSocket.OPEN) {
-        console.log(`${pathname}: state is not OPEN: ${ws.readyState}`);
+        logger.info(`${pathname}: state is not OPEN: ${ws.readyState}`);
         srsClient.abort();
         return;
       }
@@ -56,12 +56,12 @@ export async function webSocketHandler(ws, req) {
 
   ws
     .on('close', () => {
-      console.log(`${pathname} webSocket closed`);
+      logger.info(`${pathname} webSocket closed`);
       srsClient.abort();
       srsClient = null;
     })
     .on('error', err => {
-      console.log(`${pathname} webSocket error: `, err);
+      logger.info(`${pathname} webSocket error: `, err);
       srsClient.abort();
       srsClient = null;
     });
