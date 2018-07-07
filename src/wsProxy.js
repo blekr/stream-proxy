@@ -40,17 +40,17 @@ export async function webSocketHandler(ws, req) {
       }
       ws.send(data, err => {
         if (err) {
-          console.error(`${pathname}: send error: `, err);
+          logger.error(`${pathname}: send error: `, err);
           srsClient.abort();
         }
       });
     })
     .on('end', () => {
-      console.error(`${pathname}: upstream end`);
+      logger.info(`${pathname}: upstream end`);
       ws.terminate();
     })
     .on('error', err => {
-      console.error(`${pathname}: upstream error: `, err);
+      logger.error(`${pathname}: upstream error: `, err);
       ws.terminate();
     });
 
