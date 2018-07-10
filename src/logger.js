@@ -7,7 +7,10 @@ const transports = [
       const metaString = isEmpty(meta)
         ? ''
         : `\n\t${JSON.stringify(meta, null, 2)}`;
-      return `[ipc-proxy] ${level}: ${message}${metaString}`;
+      return `[ipc-proxy] ${level}: ${message}${metaString}`.replace(
+        /\n/g,
+        '\r',
+      );
     },
   }),
 ];
